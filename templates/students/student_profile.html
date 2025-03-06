@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-body">
+            <h2 class="card-title text-center">{{ student.name }}</h2>
+            <p class="text-muted text-center">Class: {{ student.class_name }}</p>
+            <div class="text-center">
+                {% if student.profile_picture %}
+                    <img src="{{ student.profile_picture.url }}" alt="Profile Picture" class="rounded-circle" width="150">
+                {% else %}
+                    <img src="/static/default_profile.png" alt="Default Profile" class="rounded-circle" width="150">
+                {% endif %}
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Student Details</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Admission No:</strong> {{ student.admission_number }}</li>
+                        <li class="list-group-item"><strong>Email:</strong> {{ student.email }}</li>
+                        <li class="list-group-item"><strong>Age:</strong> {{ student.age }}</li>
+                        <li class="list-group-item"><strong>Gender:</strong> {{ student.gender }}</li>
+                        <li class="list-group-item"><strong>Birth Date:</strong> {{ student.birth_date }}</li>
+                        <li class="list-group-item"><strong>Address:</strong> {{ student.address }}</li>
+                        <li class="list-group-item"><strong>Parent Contact:</strong> {{ student.parent_contact }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="{% url 'student_list' %}" class="btn btn-outline-primary">Back to Students</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
