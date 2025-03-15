@@ -29,6 +29,10 @@ urlpatterns = [
     path('students/register/', views.student_register, name='student_register'),
     path('students/<int:student_id>/', views.student_profile, name='student_profile'),
     path('admin/', admin.site.urls),
+    path('exams/', views.exam_list, name='exam_list'),
+    path('exams/add/', views.add_exam, name='add_exam'),
+    path('exams/results/add/', views.add_exam_result, name='add_exam_result'),
+    path('exams/results/<int:exam_id>/', views.exam_results, name='exam_results'),
 ]
 
 if settings.DEBUG:
