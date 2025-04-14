@@ -1,6 +1,14 @@
 {% extends 'students/../base.html' %}
 
 {% block content %}
+
+    <!-- Search Form -->
+    <form method="GET" class="d-flex mb-4">
+        <input type="text" name="q" class="form-control me-2" placeholder="Search by name, admission number, or email..." value="{{ request.GET.q }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+
 <div class="container mt-5">
     <h1 class="text-center mb-4">Student List</h1>
     <a href="{% url 'student_register' %}" class="btn btn-primary mb-3">Register New Student</a>

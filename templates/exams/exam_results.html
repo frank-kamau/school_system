@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">{{ exam.name }} - Exam Results</h2>
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Student</th>
+                <th>Mathematics</th>
+                <th>English</th>
+                <th>Science</th>
+                <th>Social Studies</th>
+                <th>Computer Science</th>
+                <th>Total Marks</th>
+                <th>Percentage</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{ result.student.name }}</td>
+                <td>{{ result.mathematics }}</td>
+                <td>{{ result.english }}</td>
+                <td>{{ result.science }}</td>
+                <td>{{ result.social_studies }}</td>
+                <td>{{ result.computer_science }}</td>
+                <td>{{ result.total_marks }}</td>
+                <td>{{ result.percentage }}%</td>
+                <td><strong>{{ result.grade }}</strong></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

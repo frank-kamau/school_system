@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="text-center">Add New Exam</h3>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label"><strong>Exam Name</strong></label>
+                    {{ form.name }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label"><strong>Exam Date</strong></label>
+                    {{ form.exam_date }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label"><strong>Class Name</strong></label>
+                    {{ form.class_name }}
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Save Exam</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="text-center mt-3">
+        <a href="{% url 'exam_list' %}" class="btn btn-secondary">Back to Exam List</a>
+    </div>
+</div>
+
+<!-- Bootstrap Styling -->
+<style>
+    .container {
+        max-width: 600px;
+    }
+    .card {
+        border-radius: 10px;
+    }
+    .btn {
+        border-radius: 5px;
+    }
+</style>
+{% endblock %}
