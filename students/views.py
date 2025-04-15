@@ -9,6 +9,9 @@ from exams.models import Exam, ExamResult
 from exams.forms import ExamForm, ExamResultForm
 from django.db.models import Q  # For complex queries
 from django.db.models import Avg
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.http import HttpResponse
 
 def home(request):
     return render(request, "home.html")  # Ensure home.html exists in templates
@@ -109,4 +112,72 @@ def exam_analysis(request, exam_id):
         'subject_averages': subject_averages,
         'selected_class': class_filter,
         'class_list': students
+    })
+
+def generate_pdf_exam_analysis(request, exam_id, student_class):
+    exam = Exam.objects.get(id=exam_id)
+    results = ExamResult.objects.filter(exam=exam, student__class_name=student_class)
+
+    subject_averages = results.aggregate(
+        avg_math=Avg('mathematics'),
+        avg_english=Avg('english'),
+        avg_science=Avg('science'),
+        avg_social=Avg('social_studies'),
+        avg_computer=Avg('computer_science')
+    )
+
+    for i, result in enumerate(results.order_by('-total_marks'), start=1):
+        result.rank = i
+
+    template = get_template('exams/pdf_exam_report.html')
+    html = template.render({
+        'exam': exam,
+        'results': results,
+        'subject_averages': subject_averages,
+        'class': student_class,
+    })
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{student_class}_{exam.name}_report.pdf"'
+    pisa.CreatePDF(html, dest=response)
+    return response
+
+def subject_comparison(request, exam_id):
+    exam = Exam.objects.get(id=exam_id)
+    classes = Student.objects.values_list('student_class', flat=True).distinct()
+
+    data = {
+        'labels': [],
+        'math': [],
+        'english': [],
+        'science': [],
+        'social': [],
+        'computer': [],
+    }
+
+    for cls in classes:
+        results = ExamResult.objects.filter(exam=exam, student__student_class=cls)
+        data['labels'].append(cls)
+        data['math'].append(results.aggregate(avg=Avg('mathematics'))['avg'] or 0)
+        data['english'].append(results.aggregate(avg=Avg('english'))['avg'] or 0)
+        data['science'].append(results.aggregate(avg=Avg('science'))['avg'] or 0)
+        data['social'].append(results.aggregate(avg=Avg('social_studies'))['avg'] or 0)
+        data['computer'].append(results.aggregate(avg=Avg('computer_science'))['avg'] or 0)
+
+    return render(request, 'exams/subject_comparison.html', {
+        'exam': exam,
+        'chart_data': data,
+    })
+
+def student_progress(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    results = ExamResult.objects.filter(student=student).select_related('exam').order_by('exam__year', 'exam__term')
+
+    labels = [f"{r.exam.term} {r.exam.year}" for r in results]
+    total_marks = [r.total_marks for r in results]
+
+    return render(request, 'exams/student_progress.html', {
+        'student': student,
+        'labels': labels,
+        'total_marks': total_marks,
     })

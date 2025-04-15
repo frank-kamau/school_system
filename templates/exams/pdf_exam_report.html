@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ exam.name }} - Class {{ class }} Report</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            font-size: 12px;
+        }
+        h2, h4 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 11px;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 6px;
+            text-align: center;
+        }
+        th {
+            background-color: #e9ecef;
+        }
+        .section-title {
+            margin-top: 30px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>{{ exam.name }} - Class {{ class }} Report</h2>
+    <h4>Term: {{ exam.term }} | Year: {{ exam.year }}</h4>
+
+    <div class="section-title">Subject Averages</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Mathematics</th>
+                <th>English</th>
+                <th>Science</th>
+                <th>Social Studies</th>
+                <th>Computer Science</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ subject_averages.avg_math|default:"N/A" }}</td>
+                <td>{{ subject_averages.avg_english|default:"N/A" }}</td>
+                <td>{{ subject_averages.avg_science|default:"N/A" }}</td>
+                <td>{{ subject_averages.avg_social|default:"N/A" }}</td>
+                <td>{{ subject_averages.avg_computer|default:"N/A" }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section-title">Student Results</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Student Name</th>
+                <th>Mathematics</th>
+                <th>English</th>
+                <th>Science</th>
+                <th>Social Studies</th>
+                <th>Computer Science</th>
+                <th>Total Marks</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{ result.rank }}</td>
+                <td>{{ result.student.name }}</td>
+                <td>{{ result.mathematics }}</td>
+                <td>{{ result.english }}</td>
+                <td>{{ result.science }}</td>
+                <td>{{ result.social_studies }}</td>
+                <td>{{ result.computer_science }}</td>
+                <td>{{ result.total_marks }}</td>
+                <td>{{ result.grade }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

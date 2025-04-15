@@ -34,6 +34,9 @@ urlpatterns = [
     path('exams/results/add/', views.add_exam_result, name='add_exam_result'),
     path('exams/results/<int:exam_id>/', views.exam_results, name='exam_results'),
     path('exams/<int:exam_id>/analysis/', views.exam_analysis, name='exam_analysis'),
+    path('exams/<int:exam_id>/analysis/pdf/<str:class_name>/', views.generate_pdf_exam_analysis, name='pdf_exam_report'),
+    path('exams/<int:exam_id>/comparison/', views.subject_comparison, name='subject_comparison'),
+    path('students/<int:student_id>/progress/', views.student_progress, name='student_progress'),
 ]
 
 if settings.DEBUG:

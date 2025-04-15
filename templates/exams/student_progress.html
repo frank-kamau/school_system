@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h4>Progress Report for {{ student.name }}</h4>
+    <canvas id="progressChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('progressChart');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ labels|safe }},
+            datasets: [{
+                label: 'Total Marks',
+                data: {{ total_marks|safe }},
+                fill: false,
+                borderColor: '#0dcaf0',
+                tension: 0.2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: { display: true, text: 'Student Progress Over Terms' }
+            }
+        }
+    });
+</script>
+{% endblock %}
