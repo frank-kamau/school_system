@@ -2,6 +2,7 @@
 
 {% block content %}
 <div class="container mt-5">
+<a href="{% url 'exam_analysis' exam.id %}" class="btn btn-warning">View Analysis</a>
     <h2 class="text-center">{{ exam.name }} - Exam Results</h2>
     <table class="table table-striped">
         <thead class="table-dark">

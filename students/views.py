@@ -80,7 +80,15 @@ def exam_results(request, exam_id):
 
 def exam_analysis(request, exam_id):
     exam = Exam.objects.get(id=exam_id)
-    results = ExamResult.objects.filter(exam=exam).order_by('-total_marks')
+    # results = ExamResult.objects.filter(exam=exam).order_by('-total_marks')
+    class_filter = request.GET.get('class')
+
+    students = Student.objects.all().values_list('class_name', flat=True).distinct()
+
+    if class_filter:
+        results = ExamResult.objects.filter(exam=exam, student__class_name=class_filter).order_by('-total_marks')
+    else:
+        results = ExamResult.objects.filter(exam=exam).order_by('-total_marks')
 
     # Calculate average marks per subject
     subject_averages = results.aggregate(
@@ -98,5 +106,7 @@ def exam_analysis(request, exam_id):
     return render(request, 'exams/exam_analysis.html', {
         'exam': exam,
         'results': results,
-        'subject_averages': subject_averages }
-    )
+        'subject_averages': subject_averages,
+        'selected_class': class_filter,
+        'class_list': students
+    })
