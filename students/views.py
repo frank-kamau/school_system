@@ -114,9 +114,9 @@ def exam_analysis(request, exam_id):
         'class_list': students
     })
 
-def generate_pdf_exam_analysis(request, exam_id, student_class):
+def generate_pdf_exam_analysis(request, exam_id, class_name):
     exam = Exam.objects.get(id=exam_id)
-    results = ExamResult.objects.filter(exam=exam, student__class_name=student_class)
+    results = ExamResult.objects.filter(exam=exam, student__class_name=class_name)
 
     subject_averages = results.aggregate(
         avg_math=Avg('mathematics'),
@@ -134,17 +134,18 @@ def generate_pdf_exam_analysis(request, exam_id, student_class):
         'exam': exam,
         'results': results,
         'subject_averages': subject_averages,
-        'class': student_class,
+        'class': class_name,
     })
 
+
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="{student_class}_{exam.name}_report.pdf"'
+    response['Content-Disposition'] = f'attachment; filename="{class_name}_{exam.name}_report.pdf"'
     pisa.CreatePDF(html, dest=response)
     return response
 
 def subject_comparison(request, exam_id):
     exam = Exam.objects.get(id=exam_id)
-    classes = Student.objects.values_list('student_class', flat=True).distinct()
+    classes = Student.objects.values_list('class_name', flat=True).distinct()
 
     data = {
         'labels': [],
@@ -156,7 +157,7 @@ def subject_comparison(request, exam_id):
     }
 
     for cls in classes:
-        results = ExamResult.objects.filter(exam=exam, student__student_class=cls)
+        results = ExamResult.objects.filter(exam=exam, student__class_name=cls)
         data['labels'].append(cls)
         data['math'].append(results.aggregate(avg=Avg('mathematics'))['avg'] or 0)
         data['english'].append(results.aggregate(avg=Avg('english'))['avg'] or 0)

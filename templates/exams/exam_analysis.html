@@ -180,4 +180,29 @@
         }
     });
 </script>
+
+<div class="d-flex gap-2 my-4">
+{#    <a href="{% url 'pdf_exam_report' exam.id student.class_name.name %}" class="btn btn-danger btn-sm">#}
+{#        <i class="bi bi-file-earmark-pdf"></i> Export PDF#}
+{#    </a>#}
+{#    {% if class_name %}#}
+{#    <a href="{% url 'pdf_exam_report' exam.id class_name %}">Download PDF</a>#}
+{#    {% else %}#}
+{#     <p>No class selected</p>#}
+{#    {% endif %}#}
+    <a href="{% url 'subject_comparison' exam.id %}" class="btn btn-primary btn-sm">
+        <i class="bi bi-bar-chart"></i> Class Performance
+    </a>
+{#    <a href="{% url 'pdf_exam_report' exam.id student_class %}" class="btn btn-danger btn-sm" target="_blank">#}
+{#    <i class="bi bi-file-earmark-pdf"></i> Export Class Report PDF#}
+{#    </a>#}
+
+    {% if selected_class %}
+    <a href="{% url 'pdf_exam_report' exam.id selected_class %}" class="btn btn-danger btn-sm" target="_blank">
+    <i class="bi bi-file-earmark-pdf"></i> Export Class Report PDF
+    </a>
+    {% else %}
+    <p class="text-danger">Please select a class to export PDF report.</p>
+    {% endif %}
+</div>
 {% endblock %}
