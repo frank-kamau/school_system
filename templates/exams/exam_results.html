@@ -3,6 +3,9 @@
 {% block content %}
 <div class="container mt-5">
 <a href="{% url 'exam_analysis' exam.id %}" class="btn btn-warning">View Analysis</a>
+<a href="{% url 'subject_comparison' exam.id %}" class="btn btn-primary btn-sm">
+    <i class="bi bi-bar-chart-line-fill"></i> Compare Class Performance
+</a>
     <h2 class="text-center">{{ exam.name }} - Exam Results</h2>
     <table class="table table-striped">
         <thead class="table-dark">

@@ -172,9 +172,9 @@ def subject_comparison(request, exam_id):
 
 def student_progress(request, student_id):
     student = get_object_or_404(Student, id=student_id)
-    results = ExamResult.objects.filter(student=student).select_related('exam').order_by('exam__year', 'exam__term')
+    results = ExamResult.objects.filter(student=student).select_related('exam').order_by('exam__exam_date', 'exam__term')
 
-    labels = [f"{r.exam.term} {r.exam.year}" for r in results]
+    labels = [f"{r.exam.term} {r.exam.exam_date.year}" for r in results]
     total_marks = [r.total_marks for r in results]
 
     return render(request, 'exams/student_progress.html', {
