@@ -60,6 +60,8 @@ def add_exam(request):
         if form.is_valid():
             form.save()
             return redirect('exam_list')
+        else:
+            print("Form errors:", form.errors)
     else:
         form = ExamForm()
     return render(request, 'exams/add_exam.html', {'form': form})

@@ -4,7 +4,7 @@ from .models import Exam, ExamResult
 class ExamForm(forms.ModelForm):
     class Meta:
         model = Exam
-        fields = '__all__'
+        fields = ['name', 'exam_date', 'class_name']
 
 class ExamResultForm(forms.ModelForm):
     class Meta:
